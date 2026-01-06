@@ -64,6 +64,17 @@ h1 {
     transition: all 0.3s ease;
 }
 
+.mic-select option {
+    background-color: #ffffff;
+    color: #2c3e50;
+}
+
+.mic-select:focus {
+    outline: none;
+    border-color: #dfe6e9;
+    box-shadow: none;
+}
+
 .mic-select:hover {
     border-color: var(--primary-color);
 }
