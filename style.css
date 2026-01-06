@@ -7,6 +7,34 @@
     --card-bg: #ffffff;
 }
 
+@media (prefers-color-scheme: dark) {
+    :root {
+        --bg-color: #121212;
+        --text-color: #e0e0e0;
+        --card-bg: #1e1e1e;
+    }
+    
+    .status-display {
+        color: #b0bec5;
+    }
+
+    .mic-select {
+        background-color: #0e5791;
+        color: #ffffff;
+        border-color: #0e5791;
+    }
+    
+    .mic-select option {
+        background-color: #0e5791;
+        color: #ffffff;
+    }
+
+    .btn:disabled {
+        background-color: #34495e !important;
+        color: #7f8c8d !important;
+    }
+}
+
 * {
     box-sizing: border-box;
     margin: 0;
@@ -56,7 +84,7 @@ h1 {
     padding: 10px;
     border-radius: 8px;
     border: 1px solid #dfe6e9;
-    background-color: #f8f9fa;
+    background-color: #ecf0f1;
     color: #2c3e50;
     font-size: 14px;
     outline: none;
@@ -65,7 +93,7 @@ h1 {
 }
 
 .mic-select option {
-    background-color: #ffffff;
+    background-color: #ecf0f1;
     color: #2c3e50;
 }
 
