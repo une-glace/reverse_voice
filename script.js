@@ -5,6 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const reverseBtn = document.getElementById('reverseBtn');
     const statusText = document.getElementById('statusText');
     const recordBtnText = recordBtn.querySelector('.text');
+    const micSelect = document.getElementById('micSelect');
 
     // 状态变量
     let mediaRecorder = null;
@@ -25,6 +26,52 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    // 获取麦克风列表
+    async function getMicrophones() {
+        try {
+            // 请求一次权限以确保能获取到设备标签
+            await navigator.mediaDevices.getUserMedia({ audio: true }).then(stream => {
+                stream.getTracks().forEach(track => track.stop());
+            });
+
+            const devices = await navigator.mediaDevices.enumerateDevices();
+            const audioInputs = devices.filter(device => device.kind === 'audioinput');
+            
+            // 保存当前选中的值
+            const currentSelection = micSelect.value;
+            
+            micSelect.innerHTML = ''; // 清空列表
+            
+            // 添加默认选项
+            // const defaultOption = document.createElement('option');
+            // defaultOption.value = 'default';
+            // defaultOption.text = '默认麦克风 (跟随系统)';
+            // micSelect.appendChild(defaultOption);
+
+            audioInputs.forEach(device => {
+                const option = document.createElement('option');
+                option.value = device.deviceId;
+                option.text = device.label || `麦克风 ${micSelect.length + 1}`;
+                micSelect.appendChild(option);
+            });
+
+            // 如果之前有选择，尝试恢复
+            if (currentSelection && Array.from(micSelect.options).some(opt => opt.value === currentSelection)) {
+                micSelect.value = currentSelection;
+            }
+        } catch (err) {
+            console.error('获取设备列表失败:', err);
+        }
+    }
+
+    // 监听设备变化
+    navigator.mediaDevices.ondevicechange = () => {
+        getMicrophones();
+    };
+
+    // 页面加载时尝试获取列表
+    getMicrophones();
+
     // 录音按钮点击事件
     recordBtn.addEventListener('click', async () => {
         initAudioContext();
@@ -32,7 +79,15 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!isRecording) {
             // 开始录音
             try {
-                const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                // 获取用户选择的设备ID
+                const deviceId = micSelect.value;
+                const constraints = {
+                    audio: {
+                        deviceId: deviceId ? { exact: deviceId } : undefined
+                    }
+                };
+                
+                const stream = await navigator.mediaDevices.getUserMedia(constraints);
                 startRecording(stream);
             } catch (err) {
                 console.error('无法获取麦克风权限:', err);

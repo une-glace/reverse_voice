@@ -41,10 +41,31 @@ h1 {
 }
 
 .status-display {
-    margin-bottom: 30px;
+    margin-bottom: 20px;
     height: 24px;
     color: #7f8c8d;
     font-weight: 500;
+}
+
+.device-selection {
+    margin-bottom: 30px;
+}
+
+.mic-select {
+    width: 100%;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #dfe6e9;
+    background-color: #f8f9fa;
+    color: #2c3e50;
+    font-size: 14px;
+    outline: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.mic-select:hover {
+    border-color: var(--primary-color);
 }
 
 .controls {
